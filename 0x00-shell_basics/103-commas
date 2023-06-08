@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -A1p | sort -d | awk '{printf "%s,", $0} END {print ""}'
+ls -ap | sort -d | awk '{printf "%s,", $0} END {print ""}'
