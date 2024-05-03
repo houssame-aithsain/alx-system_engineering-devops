@@ -1,0 +1,8 @@
+#!/bin/bash
+# This script will list all files in the current directory that are not hidden and are not directories
+
+for file in *; do
+    if [[ -f "$file" && ! "$file" =~ ^\. ]]; then
+        echo "${file#*-}"
+    fi
+done
