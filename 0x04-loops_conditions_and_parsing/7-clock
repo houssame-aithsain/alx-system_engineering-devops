@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This script will print out the minutes of each hour from 1 to 59 for each hour from 0 to 11
 
 hour=0
