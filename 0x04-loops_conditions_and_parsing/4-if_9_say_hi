@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Write a shell script that prints "Best School" 10 times. If the script is run with a -n option, it should print "Hi" after the 9th "Best School".
+
+count=1
+
+while [ $count -le 10 ]
+do
+    if [ $count -eq 9 ]
+    then
+        echo "Best School"
+        echo "Hi"
+    else
+        echo "Best School"
+    fi
+
+    count=$((count+1))
+done
