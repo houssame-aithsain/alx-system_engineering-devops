@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 # This script will print out the minutes of each hour from 1 to 59 for each hour from 0 to 11
 
-hour=0
+h=0
 
-while [ $hour -le 12 ]
+while [ $h -le 12 ]
 do
-  echo "Hour: $hour"
-  minute=1
-  while [ $minute -le 59 ]
+  m=1
+  echo "Hour: $h"
+
+  while [ $m -le 59 ]
   do
-    echo "$minute"
-    (( minute++ ))
+    echo "$m"
+    (( m++ ))
   done
-  (( hour++ ))
+  (( h++ ))
 done
