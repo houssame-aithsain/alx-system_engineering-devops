@@ -3,14 +3,12 @@
 
 hour=0
 
-while [ $hour -lt 12 ]; do
-    printf -v padded_hour "%02d" $hour
-    echo "Hour: $padded_hour"
+while [ $hour -le 12 ]; do
+    echo "Hour: $hour"
     
     minute=0
-    while [ $minute -lt 60 ]; do
-        printf -v padded_minute "%2d" $minute
-        echo $padded_minute
+    while [ $minute -le 59 ]; do
+        echo $minute
         minute=$((minute+1))
     done
     
