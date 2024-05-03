@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Write a shell script that displays "Best School" 10 times on the screen
 
 counter=0
