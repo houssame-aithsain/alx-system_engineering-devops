@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
-# This script checks if a file exists, is not empty and is a regular file
+# check if a file exists, is not empty, and is a regular file
 
-file="/home/kali/Desktop/alx-system_engineering-devops/0x04-loops_conditions_and_parsing/9-to_file_or_not_to_file/school"
-
-if [ -e "$file" ]; then
+if [ -e school ]; then
     echo "school file exists"
-    if [ -s "$file" ]; then
+    if [ -s school ]; then
         echo "school file is not empty"
     else
         echo "school file is empty"
     fi
-    if [ -f "$file" ]; then
+    if [ -f school ]; then
         echo "school is a regular file"
     fi
 else
