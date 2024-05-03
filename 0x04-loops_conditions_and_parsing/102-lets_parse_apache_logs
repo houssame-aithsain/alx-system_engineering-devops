@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Write a shell script to extract the first and ninth column from a file.
+
+awk '{print $1, $9}' apache-access.log
