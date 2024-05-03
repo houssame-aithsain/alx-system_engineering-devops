@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# 1. 读取日志文件
+
+awk '{ count[$1" "$9]++ } END { for (key in count) print count[key], key }' | sort -rn
