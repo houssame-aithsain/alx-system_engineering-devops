@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# This script is used to build the docker image for the application
+
+pgrep -fl bash
