@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 # This script is used to build the docker image for the application
+# Find the process ID of the 4-to_infinity_and_beyond script
 
+pid=$(pgrep -f "4-to_infinity_and_beyond")
+if [ -n "$pid" ]; then
+    kill -9 "$pid"
+fi
