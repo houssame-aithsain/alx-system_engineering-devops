@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # This script is used to build the docker image for the application
 
-pkill -f 7-highlander
+pkill -f -SIGKILL 7-highlander
