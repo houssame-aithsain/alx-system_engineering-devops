@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# This script is used to start the server for the application
+
+nc -l localhost 98
