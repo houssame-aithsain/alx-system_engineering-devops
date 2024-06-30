@@ -1,13 +1,13 @@
-# Install the necessary package
+# this is a manifest file for puppet
 file_line { 'Turn off passwd auth':
-    ensure => 'present',
-    path  => '/etc/ssh/sshd_config',
-    line  => 'PasswordAuthentication no',
+  ensure => 'present',
+  path   => '/etc/ssh/ssh_config',
+  line   => '    PasswordAuthentication no',
 }
 
-# Declare identity file
+# this is a manifest file for puppet
 file_line { 'Declare identity file':
-    ensure => 'present',
-    path  => '/etc/ssh/ssh_config',
-    line  => 'IdentityFile ~/.ssh/school',
+  ensure => 'present',
+  path   => '/etc/ssh/ssh_config',
+  line   => '    IdentityFile ~/.ssh/school',
 }
