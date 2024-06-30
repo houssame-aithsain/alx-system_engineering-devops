@@ -1,0 +1,6 @@
+# connect to a server without typing a password.
+Host 421599-web-01
+    HostName 54.84.246.32
+    User ubuntu
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
