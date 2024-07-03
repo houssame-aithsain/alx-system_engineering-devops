@@ -1,36 +1,24 @@
 # Ensure Nginx is installed
+
+exec { 'update system':
+        command => '/usr/bin/apt-get update',
+}
+
 package { 'nginx':
-  ensure => installed,
+	ensure => 'installed',
+	require => Exec['update system']
 }
 
-# Ensure Nginx service is running and enabled
-service { 'nginx':
-  ensure    => running,
-  enable    => true,
-  require   => Package['nginx'],
+file {'/var/www/html/index.html':
+	content => 'Hello World!'
 }
 
-# Configure Nginx to serve 'Hello World!' at root
-file { '/var/www/html/index.html':
-  ensure  => file,
-  content => 'Hello World!',
-  require => Package['nginx'],
-  notify  => Service['nginx'],
+exec {'redirect_me':
+	command => 'sed -i "24i\	rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default',
+	provider => 'shell'
 }
 
-# Configure Nginx to perform a 301 redirect for /redirect_me
-file_line { 'nginx_redirect':
-  ensure  => present,
-  path    => '/etc/nginx/sites-available/default',
-  line    => 'rewrite ^/redirect_me$ http://example.com permanent;',
-  match   => '^.*redirect_me.*$',
-  require => Package['nginx'],
-  notify  => Service['nginx'],
-}
-
-# Ensure the Nginx configuration is reloaded to apply changes
-exec { 'nginx_reload':
-  command     => '/usr/sbin/nginx -s reload',
-  refreshonly => true,
-  subscribe   => File['/var/www/html/index.html', '/etc/nginx/sites-available/default'],
+service {'nginx':
+	ensure => running,
+	require => Package['nginx']
 }
