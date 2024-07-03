@@ -19,7 +19,6 @@ exec {'redirect_me':
     provider => 'shell'
 }
 
-
 # Ensure Nginx service is running
 service {'nginx':
     ensure => 'running',
