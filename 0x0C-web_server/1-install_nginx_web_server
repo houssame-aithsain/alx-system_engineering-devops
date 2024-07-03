@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
+# install and run nginx server.
 
-# Update package lists
 apt-get update
 
-# Install nginx
 apt-get install -y nginx
 
-# change the owner
 sudo chown -R ubuntu /var/www
 
-# Create a default HTML page
+sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
+
 echo "Hello World!" > /var/www/html/index.html
 
-# starting nginx
 sudo service nginx start
