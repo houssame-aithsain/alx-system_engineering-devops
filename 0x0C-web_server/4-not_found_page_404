@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Configure a custom 404 page
+
+set -e  # Exit script if any command fails
+
+# Check if Nginx is installed
+if ! nginx -v > /dev/null 2>&1; then
+    sudo apt-get update
+    sudo apt-get -y install nginx
+fi
+
+sudo ufw allow 'Nginx HTTP'
+sudo chmod -R 755 /var/www
+echo 'Hello World' > /var/www/html/index.html
+
+# Prepare the custom 404 page content
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+
+# Define the new configuration
+new_config="server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+    error_page 404 /404.html;
+    location /404.html {
+        internal;
+    }
+    if (\$request_filename ~ redirect_me){
+        rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
+    }
+}"
+
+# Check if the custom configuration already exists to ensure idempotency
+if ! grep -q "Ceci n'est pas une page" /var/www/html/404.html; then
+    echo "$new_config" > /etc/nginx/sites-available/default
+fi
+
+# Use systemctl to manage Nginx service
+if ! systemctl is-active --quiet nginx; then
+    sudo systemctl start nginx
+else
+    sudo systemctl restart nginx
+fi
