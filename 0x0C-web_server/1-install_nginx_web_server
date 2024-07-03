@@ -9,9 +9,6 @@ apt-get install -y nginx
 # change the owner
 sudo chown -R ubuntu /var/www
 
-# Configure nginx to listen on port 80
-sed -i 's/listen 80 default_server;/listen 80;/' /etc/nginx/sites-available/default
-
 # Create a default HTML page
 echo "Hello World!" > /var/www/html/index.html
 
