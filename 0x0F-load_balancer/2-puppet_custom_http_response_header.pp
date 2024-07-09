@@ -1,30 +1,29 @@
 # Puppet manifest to add a custom HTTP header 'X-Served-By' with the hostname of the server to Nginx configuration
 
-class nginx_custom_header {
-  package { 'nginx':
-    ensure => installed,
-  }
-
-  service { 'nginx':
-    ensure     => running,
-    enable     => true,
-    require    => Package['nginx'],
-    subscribe  => File['/etc/nginx/sites-available/default'],
-  }
-
-  file { '/etc/nginx/sites-available/default':
-    ensure  => file,
-    content => template('nginx/default.erb'),
-    require => Package['nginx'],
-    notify  => Service['nginx'],
-  }
-
-  file_line { 'custom_http_header':
-    path  => '/etc/nginx/sites-available/default',
-    line  => 'add_header X-Served-By $hostname;',
-    match => '^[\s]*add_header X-Served-By',
-    require => File['/etc/nginx/sites-available/default'],
-  }
+exec { 'update system':
+        command => '/usr/bin/apt-get update',
 }
 
-include nginx_custom_header
+package { 'nginx':
+	ensure => 'installed',
+	require => Exec['update system']
+}
+
+file {'/var/www/html/index.html':
+	content => 'Hello World!'
+}
+
+exec {'redirect_me':
+	command => 'sed -i "24i\	rewrite ^/redirect_me https://th3-gr00t.tk/ permanent;" /etc/nginx/sites-available/default',
+	provider => 'shell'
+}
+
+exec {'HTTP header':
+	command => 'sed -i "25i\	add_header X-Served-By \$hostname;" /etc/nginx/sites-available/default',
+	provider => 'shell'
+}
+
+service {'nginx':
+	ensure => running,
+	require => Package['nginx']
+}
