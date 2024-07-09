@@ -35,13 +35,13 @@ defaults
   timeout http-request 10s
 
 frontend kayn-tech-frontend
-    bind *:80
+    bind *:541
     default_backend kayn-tech-backend
 
 backend kayn-tech-backend
     balance roundrobin
-    server 421599-web-01 54.84.246.32 check
-    server 421599-web-02 52.91.154.11:80 check
+    server 421599-web-01 54.84.246.55:80 check port 80
+    server 421599-web-02 52.91.154.11:82 check port 80
 "
 
 # shellcheck disable=SC2154
