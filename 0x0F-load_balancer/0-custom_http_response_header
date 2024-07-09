@@ -72,7 +72,7 @@ server_config=\
         }
         # Custom rule for redirecting certain requests
         if (\$request_filename ~ redirect_me){
-            rewrite ^ https://th3-gr00t.tk/ permanent;
+            rewrite ^ https://google.com/ permanent;
         }
         # Custom error page configuration
         error_page 404 /error_404.html;
