@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # This script installs and configures HAProxy on a Ubuntu machine to load balance traffic between two web servers
 
 # Install HAProxy
