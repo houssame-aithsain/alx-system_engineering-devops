@@ -40,8 +40,8 @@ frontend kayn-tech-frontend
 
 backend kayn-tech-backend
     balance roundrobin
-    server 454668-web-01 3.85.41.65:80 check
-    server 454668-web-02 54.197.99.224:80 check
+    server 421599-web-01 54.84.246.32 check
+    server 421599-web-02 52.91.154.11:80 check
 "
 
 # shellcheck disable=SC2154
