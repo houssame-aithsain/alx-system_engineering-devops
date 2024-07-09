@@ -1,76 +1,82 @@
 #!/usr/bin/env bash
-# duplicate web-01 to web-02
-# these scripts are an upgrade from the web-server scripts...
+# This script sets up a basic web server using Nginx. It installs Nginx if not present,
+# configures firewall rules, sets permissions for web content, and configures Nginx with custom settings.
 
-# uncomment to see the script run in action
-#set -x
+# Uncomment to enable debugging
+# set -x
 
-function install() {
-	command -v "$1" &> /dev/null
-
-	#shellcheck disable=SC2181
-	if [ $? -ne 0 ]; then
-		sudo apt-get update -y -qq && \
-			sudo apt-get install -y "$1" -qq
+# Function to install a package if it's not already installed
+install() {
+    if ! command -v "$1" &> /dev/null; then
+        echo "Installing $1..."
+        sudo apt-get update -y -qq && \
+        sudo apt-get install -y "$1" -qq
+    else
+        echo "$1 is already installed."
     fi
 }
 
-install nginx #install nginx
+# Install Nginx
+install nginx
 
-# allowing nginx on firewall
+# Allow Nginx through the firewall
 sudo ufw allow 'Nginx HTTP'
+echo "Nginx HTTP allowed through firewall."
 
-# Give the user ownership to website files for easy editing
-if [ -d "/var/www" ]; then
-	sudo chown -R "$USER":"$USER" /var/www
-	sudo chmod -R 755 /var/www
-else
-	sudo mkdir -p /var/www
-	sudo chown -R "$USER":"$USER" /var/www
-	sudo chmod -R 755 /var/www
+# Ensure the /var/www directory exists and give the user ownership for easy editing
+if [ ! -d "/var/www" ]; then
+    sudo mkdir -p /var/www
 fi
+sudo chown -R "$USER":"$USER" /var/www
+sudo chmod -R 755 /var/www
+echo "Set ownership and permissions for /var/www."
 
-# create directories if not present
-for dir in /var/www/{html,error}; do
-	if ! [ -d "$dir" ]; then
-		mkdir -p "$dir"
-	fi
+# Create necessary directories if they don't exist
+for dir in /var/www/html /var/www/error; do
+    if [ ! -d "$dir" ]; then
+        mkdir -p "$dir"
+        echo "Created directory $dir."
+    fi
 done
 
-# creating new index
+# Create a new index page
 echo "Hello World!" > /var/www/html/index.html
 
-# create new error page
+# Create a new custom error page
 echo "Ceci n'est pas une page" > /var/www/html/error_404.html
 
-# backup default server config file
-sudo cp /etc/nginx/sites-enabled/default nginx-sites-enabled_default.backup
+# Backup the default Nginx server configuration
+sudo cp /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default.backup
+echo "Backed up the default Nginx configuration."
 
-server_config=\
-"server {
-		listen 80 default_server;
-		listen [::]:80 default_server;
-		root /var/www/html;
-		index index.html index.htm index.nginx-debian.html
-		server_name_;
-		add_header X-Served-By \$hostname;
-		location / {
-			try_files \$uri \$uri/ =404;
-		}
-		if (\$request_filename ~ redirect_me){
-			rewrite ^ https://th3-gr00t.tk/ permanent;
-		}
-		error_page 404 /error_404.html;
-		location = /error_404.html {
-			internal;
-		}
+# Define new server configuration
+server_config="server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+    add_header X-Served-By \$hostname;
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+    if (\$request_filename ~ redirect_me) {
+        rewrite ^ https://www.google.com/ permanent;
+    }
+    error_page 404 /error_404.html;
+    location = /error_404.html {
+        internal;
+    }
 }"
 
-#shellcheck disable=SC2154
-echo "$server_config" | sudo dd status=none of=/etc/nginx/sites-enabled/default
+# Apply the new Nginx server configuration
+echo "$server_config" | sudo tee /etc/nginx/sites-enabled/default > /dev/null
+echo "Applied new Nginx server configuration."
 
+# Restart Nginx to apply changes
 if [ "$(pgrep -c nginx)" -le 0 ]; then
-	sudo service nginx start
+    sudo service nginx start
 else
-	sudo service nginx restart
+    sudo service nginx restart
 fi
+echo "Nginx has been restarted."
