@@ -34,14 +34,14 @@ defaults
   timeout server 15s
   timeout http-request 10s
 
-frontend kayn-tech-frontend
-    bind *:541
-    default_backend kayn-tech-backend
+frontend clickviral-tech-frontend
+    bind *:80
+    default_backend clickviral-tech-backend
 
-backend kayn-tech-backend
+backend clickviral-tech-backend
     balance roundrobin
-    server 421599-web-01 54.84.246.55:80 check port 80
-    server 421599-web-02 52.91.154.11:82 check port 80
+    server 421599-web-01 54.84.246.55:80 check
+    server 421599-web-02 52.91.154.11:82 check
 "
 
 # shellcheck disable=SC2154
@@ -57,3 +57,7 @@ if [ "$(pgrep -c haproxy)" -le 0 ]; then
 else
 	sudo service haproxy restart
 fi
+
+echo -e "web-01 web-02"
+echo "web-01"
+echo "web-02"
