@@ -1,17 +1,36 @@
 #!/usr/bin/env bash
-# Configures Nginx to include a custom HTTP response header with the server's hostname
+# Configures a new Ubuntu machine with Nginx, custom HTTP response header, redirection, and custom 404 page
 
-# Install Nginx if it's not already installed
+# Update and install Nginx if not already installed
 if ! dpkg -s nginx &> /dev/null; then
     sudo apt-get update
-    sudo apt-get install -y nginx
+    sudo apt-get -y install nginx
 fi
 
-# Configure Nginx to add a custom header with the hostname
-echo "Adding custom header to Nginx configuration"
-SERVER_NAME=$(hostname)
-echo "set \$server_name $SERVER_NAME;" | sudo tee /etc/nginx/conf.d/server_name.conf
-echo 'add_header X-Served-By $server_name;' | sudo tee /etc/nginx/conf.d/custom_header.conf
+# Define hostname for the custom header
+HOST_NAME=$(hostname)
+
+# Add custom response header if not already present
+if ! grep -q "X-Served-By" /etc/nginx/sites-available/default; then
+    HEADER="\n\tadd_header X-Served-By $HOST_NAME;"
+    sudo sed -i "/server_name _;/a $HEADER" /etc/nginx/sites-available/default
+fi
+
+# Create a first index.html page
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Add redirection if not already present
+if ! grep -q "redirect_me" /etc/nginx/sites-available/default; then
+    REDIRECT="\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=3MbaGJN2ioQ;\n\t}"
+    sudo sed -i "/server_name _;/a $REDIRECT" /etc/nginx/sites-available/default
+fi
+
+# Add custom 404 page if not already present
+if ! grep -q "error_page 404" /etc/nginx/sites-available/default; then
+    ERROR_PAGE="\n\terror_page 404 /custom_404.html;"
+    echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
+    sudo sed -i "/server_name _;/a $ERROR_PAGE" /etc/nginx/sites-available/default
+fi
 
 # Restart Nginx to apply changes
-sudo systemctl restart nginx
+sudo service nginx restart
