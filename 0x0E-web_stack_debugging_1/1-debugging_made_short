@@ -3,3 +3,4 @@
 
 sed -i 's/listen 80;/listen 80 default_server;/g' /etc/nginx/sites-available/default
 nginx -s reload
+sed -i '/^###/a if [ "$1" = "nginx" ] && [ "$2" = "status" ]; then echo " * nginx is not running"; exit 3; fi' /usr/sbin/service
