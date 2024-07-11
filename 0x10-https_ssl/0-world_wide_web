@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Displays DNS A record information for given domain and subdomains
+
+function query_dns() {
+  local domain=$1
+  local subdomain=$2
+  local record
+
+  if [ -z "$subdomain" ]; then
+    for sub in www lb-01 web-01 web-02; do
+      record=$(dig +short $sub.$domain A)
+      echo "The subdomain $sub is a A record and points to $record"
+    done
+  else
+    record=$(dig +short $subdomain.$domain A)
+    echo "The subdomain $subdomain is a A record and points to $record"
+  fi
+}
+
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 <domain> [subdomain]"
+  exit 1
+fi
+
+query_dns "$1" "$2"
