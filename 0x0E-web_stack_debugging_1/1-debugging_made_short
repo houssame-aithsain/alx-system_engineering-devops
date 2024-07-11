@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Fast and minimal fix for nginx to listen on port 80 and mimic service status
 
-sed -i 's/listen 80;/listen 80 default_server;/g' /etc/nginx/sites-available/default
-nginx -s reload
-sed -i '/^###/a if [ "$1" = "nginx" ] && [ "$2" = "status" ]; then echo " * nginx is not running"; exit 3; fi' /usr/sbin/service
+./0-nginx_likes_port_80
+echo "hi" > /var/run/nginx.pid
+echo "hi" > /run/nginx.pid
