@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # Configures Nginx to listen on port 80 and mimics service status
 
-sed -i '/listen \[::\]:80 default_server;/a listen 80;' /etc/nginx/sites-available/default
-service nginx restart
-echo "service nginx status" > /usr/sbin/service && chmod +x /usr/sbin/service
+sed -i 's/listen 80;/listen 80 default_server;/g' /etc/nginx/sites-available/default
+nginx -s reload
