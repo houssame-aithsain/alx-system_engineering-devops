@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>README</title>
-</head>
-<body>
     <h1>README</h1>
 
     <h2>Blog Post: What Happens When You Type "https://www.google.com" and Press Enter?</h2>
@@ -28,5 +20,3 @@
 
     <h3>Contact</h3>
     <p>If you have any questions or need further assistance, feel free to reach out!</p>
-</body>
-</html>
