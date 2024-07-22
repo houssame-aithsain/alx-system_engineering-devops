@@ -1,5 +1,4 @@
-#
-# /etc/ufw/before.rules
+#/etc/ufw/before.rules
 #
 # This file contains rules that should be applied before the regular ufw rules.
 # Custom rules can be added to the ufw-before-* chains. These rules are
