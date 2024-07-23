@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script configures Nginx to run as the 'nginx' user instead of root and makes necessary adjustments.
+# This script configures Nginx to run as the 'nginx'
 
 # Terminate any running Apache2 processes to avoid conflicts with Nginx
 pkill "apache2"
