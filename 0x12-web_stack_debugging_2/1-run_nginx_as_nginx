@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
-# nginx as su instead of root
+# This script configures Nginx to run as the 'nginx' user instead of root and makes necessary adjustments.
+
+# Terminate any running Apache2 processes to avoid conflicts with Nginx
 pkill "apache2"
+
+# Insert 'user nginx;' at the beginning of the Nginx configuration file
 sudo sed -i '1i user nginx;' /etc/nginx/nginx.conf
+
+# Ensure Nginx listens on port 80
 sudo sed -i 's/\<80\>/&80/' /etc/nginx/sites-available/default
+
+# Set appropriate permissions for the Nginx configuration file
 sudo chmod 644 /etc/nginx/nginx.conf
+
+# Restart Nginx as the 'nginx' user to apply changes
 sudo -u nginx service nginx restart
