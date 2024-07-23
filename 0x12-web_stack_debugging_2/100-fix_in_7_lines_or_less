@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
-# Runs nginx as the user nginx and listening on port 8080 but shorter
+# Runs nginx as the user nginx and listening on port 8080
+
+# Make sure the files are writable
 sed -i 's/Listen 8080/#Listen 8080/g' /etc/apache2/ports.conf
+# Change user and port in nginx.conf
 sed -i 's/#user www-data;/user nginx;/g' /etc/nginx/nginx.conf
+# Change port in default file
 sed -i 's/80/8080/g' /etc/nginx/sites-available/default
+# Restart services
 pkill -1 apache2
+# Restart nginx
 chmod ugo+wrx /etc/apache2/ports.conf /etc/nginx/nginx.conf | sudo -u nginx service nginx restart
