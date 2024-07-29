@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 """
-Export data in the CSV format.
+This script fetches and displays the TODO list progress of an employee
+using a REST API and exports the data to a CSV file.
 """
+
 import csv
 import requests
 import sys
