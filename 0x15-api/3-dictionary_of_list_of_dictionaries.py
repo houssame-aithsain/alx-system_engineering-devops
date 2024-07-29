@@ -4,8 +4,8 @@ This script fetches and displays the TODO list progress of all employees
 using a REST API and exports the data to a JSON file.
 """
 
-import requests
 import json
+import requests
 
 # URL to fetch data from
 users_url = 'https://jsonplaceholder.typicode.com/users'
