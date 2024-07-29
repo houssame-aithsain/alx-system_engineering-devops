@@ -21,8 +21,8 @@ if __name__ == "__main__":
         username = user.get("username")
 
         # Fetch tasks information for each user
-        tasks_url = f"https://jsonplaceholder.typicode.com/\
-            todos?userId={user_id}"
+        tasks_url = f"https://jsonplaceholder.\
+            typicode.com/todos?userId={user_id}"
         tasks_response = requests.get(tasks_url)
         tasks_data = tasks_response.json()
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
             }
             tasks_list.append(task_dict)
 
-        all_tasks[user_id] = tasks_list
+        all_tasks[str(user_id)] = tasks_list  # Ensure user_id is a string
 
     # Define the JSON file name
     json_file = "todo_all_employees.json"
