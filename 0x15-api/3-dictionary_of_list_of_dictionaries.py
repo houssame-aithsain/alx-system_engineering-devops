@@ -4,43 +4,43 @@ This script fetches and displays the TODO list progress of all employees
 using a REST API and exports the data to a JSON file.
 """
 
-import json
 import requests
+import json
 
-if __name__ == "__main__":
-    # Fetch all users information
-    users_url = "https://jsonplaceholder.typicode.com/users"
-    users_response = requests.get(users_url)
-    users_data = users_response.json()
+# URL to fetch data from
+users_url = 'https://jsonplaceholder.typicode.com/users'
+todos_url = 'https://jsonplaceholder.typicode.com/todos'
 
-    # Dictionary to hold all tasks for all users
-    all_tasks = {}
+# Fetch data from the APIs
+users_response = requests.get(users_url)
+todos_response = requests.get(todos_url)
 
-    for user in users_data:
-        user_id = user.get("id")
-        username = user.get("username")
+# Convert response to JSON
+users = users_response.json()
+todos = todos_response.json()
 
-        # Fetch tasks information for each user
-        tasks_url = f"https://jsonplaceholder.\
-            typicode.com/todos?userId={user_id}"
-        tasks_response = requests.get(tasks_url)
-        tasks_data = tasks_response.json()
+# Create a dictionary to hold the tasks for each user
+tasks_dict = {}
 
-        # Prepare data for JSON export
-        tasks_list = []
-        for task in tasks_data:
-            task_dict = {
+# Populate the dictionary
+for user in users:
+    user_id = user['id']
+    username = user['username']
+
+    # List to hold tasks for the current user
+    user_tasks = []
+
+    for todo in todos:
+        if todo['userId'] == user_id:
+            task_info = {
                 "username": username,
-                "task": task.get("title"),
-                "completed": task.get("completed")
+                "task": todo['title'],
+                "completed": todo['completed']
             }
-            tasks_list.append(task_dict)
+            user_tasks.append(task_info)
 
-        all_tasks[str(user_id)] = tasks_list  # Ensure user_id is a string
+    tasks_dict[user_id] = user_tasks
 
-    # Define the JSON file name
-    json_file = "todo_all_employees.json"
-
-    # Write data to the JSON file
-    with open(json_file, mode='w') as file:
-        json.dump(all_tasks, file)
+# Export the data to a JSON file
+with open('todo_all_employees.json', 'w') as json_file:
+    json.dump(tasks_dict, json_file)
