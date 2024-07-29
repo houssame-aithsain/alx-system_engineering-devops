@@ -7,6 +7,7 @@ using a REST API.
 import requests
 import sys
 
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: {} <employee_id>".format(sys.argv[0]))
@@ -36,6 +37,7 @@ def main():
     # Print the titles of completed tasks
     for task in done_tasks:
         print("\t {}".format(task.get("title")))
+
 
 if __name__ == "__main__":
     main()
