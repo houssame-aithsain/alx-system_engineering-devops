@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
+# Sends a HUP signal to the master process to reload the workers.
+
 PID=$(pgrep gunicorn)
 kill -s HUP $PID
